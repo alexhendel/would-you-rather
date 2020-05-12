@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { handleInitialData } from '../actions/shared';
 import Backdrop from '@material-ui/core/Backdrop';
+import LeaderBoard from './LeaderBoard';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = (theme) => ({
@@ -46,7 +47,7 @@ class App extends React.Component {
             {/* <AddPoll /> */}
           </Route>
           <Route exact path="/leaderboard">
-            {/* <LeaderBoard /> */}
+            <LeaderBoard />
           </Route>
           <Route>
             <NoMatch />
@@ -59,4 +60,6 @@ class App extends React.Component {
 
 export default connect((state) => ({
   loading: state.loading,
+  users: state.users,
+  questions: state.questions,
 }))(withStyles(styles, { withTheme: true })(App));
