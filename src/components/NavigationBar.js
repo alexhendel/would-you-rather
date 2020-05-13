@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
@@ -21,20 +23,16 @@ const useStyles = makeStyles((theme) => ({
   title: {
     padding: theme.spacing(1),
   },
-  avatarSmall: {
-    width: theme.spacing(4),
-    height: theme.spacing(4),
-    marginLeft: theme.spacing(1),
-    boxShadow: theme.shadows[2],
+  greeting: {
+    marginRight: theme.spacing(1),
   },
 }));
 
 const NavigationBar = (props) => {
   const users = useSelector((state) => state.users);
   const authedUser = useSelector((state) => state.authedUser);
+  const dispatch = useDispatch();
   const classes = useStyles();
-
-  const logout = () => handleSignOut();
 
   return (
     <div className={classes.root}>
@@ -47,12 +45,24 @@ const NavigationBar = (props) => {
 
           {authedUser ? (
             <>
-              <Typography>Hello, {users[authedUser.id].name}</Typography>
-              <UserAvatar user={users[authedUser.id]} />
-              <Button onClick={logout()}>Sign Out</Button>
+              <Typography className={classes.greeting}>
+                Hello, {users[authedUser].name}
+              </Typography>
+              <UserAvatar user={users[authedUser]} />
+              <Button
+                color="secondary"
+                onClick={() => dispatch(handleSignOut())}
+              >
+                Sign Out
+              </Button>
             </>
           ) : (
-            <Button component={Link} to="/signin">
+            <Button
+              variant="contained"
+              color="primary"
+              component={Link}
+              to="/signin"
+            >
               Sign In
             </Button>
           )}

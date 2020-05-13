@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 const NoMatch = () => {
-  let location = useLocation();
+  const location = useLocation();
   return (
     <>
       <h1>404 - Not Found</h1>

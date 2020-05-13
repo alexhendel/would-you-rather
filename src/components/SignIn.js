@@ -1,4 +1,9 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { handleSignIn } from '../actions/authedUser';
+
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,28 +12,36 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '550px',
     marginTop: '1em',
   },
-  formControl: {
+  formElement: {
     width: '100%',
     marginTop: '2em',
   },
 }));
 
-const SignIn = () => {
+const SignIn = (props) => {
   const users = useSelector((state) => state.users);
   const authedUser = useSelector((state) => state.authedUser);
+  const dispatch = useDispatch();
+  const history = useHistory();
   const classes = useStyles();
-  let loginId = authedUser ? authedUser.id : '';
+  const [loginId, setLoginId] = React.useState(authedUser ? authedUser.id : '');
 
   const handleSelectChange = (event) => {
-    loginId = event.target.value;
+    setLoginId(event.target.value);
+  };
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    dispatch(handleSignIn(loginId));
+    history.push('/');
   };
 
   return (
@@ -41,7 +54,7 @@ const SignIn = () => {
           <Typography variant="body2" component="p">
             Please Sign In.
           </Typography>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formElement}>
             <InputLabel id="select-user-label">User</InputLabel>
             <Select
               labelId="select-user-label"
@@ -62,6 +75,15 @@ const SignIn = () => {
               })}
             </Select>
           </FormControl>
+          <Button
+            className={classes.formElement}
+            color="primary"
+            variant="contained"
+            onClick={handleLogin}
+            disabled={!loginId}
+          >
+            Sign In
+          </Button>
         </CardContent>
       </Card>
     </Box>
