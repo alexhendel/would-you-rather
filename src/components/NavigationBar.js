@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
+import UserAvatar from './UserAvatar';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import { handleSignOut } from '../actions/authedUser';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +30,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavigationBar = (props) => {
+  const users = useSelector((state) => state.users);
+  const authedUser = useSelector((state) => state.authedUser);
   const classes = useStyles();
+
+  const logout = () => handleSignOut();
 
   return (
     <div className={classes.root}>
@@ -39,11 +45,17 @@ const NavigationBar = (props) => {
           </Typography>
           <span className={classes.spacer} />
 
-          <Typography>Hello, user!</Typography>
-          <Avatar className={classes.avatarSmall} elevation={4}>
-            HB
-          </Avatar>
-          <Button>Sign out</Button>
+          {authedUser ? (
+            <>
+              <Typography>Hello, {users[authedUser.id].name}</Typography>
+              <UserAvatar user={users[authedUser.id]} />
+              <Button onClick={logout()}>Sign Out</Button>
+            </>
+          ) : (
+            <Button component={Link} to="/signin">
+              Sign In
+            </Button>
+          )}
         </Toolbar>
         <Divider />
         <Toolbar>

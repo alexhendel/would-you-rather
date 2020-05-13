@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import NoMatch from './NoMatch';
+import SignIn from './SignIn';
 import NavigationBar from './NavigationBar';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -41,7 +42,7 @@ class App extends React.Component {
             {/* <Home /> */}
           </Route>
           <Route exact path="/signin">
-            {/* <SignIn /> */}
+            <SignIn />
           </Route>
           <Route exact path="/add">
             {/* <AddPoll /> */}
@@ -60,6 +61,4 @@ class App extends React.Component {
 
 export default connect((state) => ({
   loading: state.loading,
-  users: state.users,
-  questions: state.questions,
 }))(withStyles(styles, { withTheme: true })(App));
