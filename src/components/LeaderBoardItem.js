@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
+import UserAvatar from './UserAvatar';
 import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,9 +28,7 @@ const LeaderBoardItem = (props) => {
         <CardContent>
           <Grid container spacing={2} justify="center" alignItems="center">
             <Grid item>
-              <Avatar color="primary" className={classes.avatar}>
-                {props.user.name.charAt(0)}
-              </Avatar>
+              <UserAvatar user={props.user} />
             </Grid>
             <Grid item>
               <Typography variant="h5" component="h2">
