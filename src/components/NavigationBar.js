@@ -74,7 +74,9 @@ const NavigationBar = (props) => {
         <Divider />
         <Toolbar>
           <span className={classes.spacer} />
-          <Button disableElevation>Home</Button>
+          <Button disableElevation component={Link} to="/">
+            Home
+          </Button>
           <Button disableElevation component={Link} to="/add">
             New Question
           </Button>

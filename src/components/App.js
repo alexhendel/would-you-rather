@@ -40,18 +40,18 @@ class App extends React.Component {
       <Router>
         <NavigationBar title="Would You Rather" />
         <Switch>
-          <Route exact path="/">
-            {/* <Home /> */}
-          </Route>
-          <Route exact path="/signin">
-            <SignIn />
-          </Route>
+          <ProtectedRoute exact path="/">
+            <Home />
+          </ProtectedRoute>
           <ProtectedRoute exact path="/add">
             <NewQuestion />
           </ProtectedRoute>
           <ProtectedRoute exact path="/leaderboard">
             <LeaderBoard />
           </ProtectedRoute>
+          <Route exact path="/signin">
+            <SignIn />
+          </Route>
           <Route>
             <NoMatch />
           </Route>
