@@ -17,12 +17,15 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '550px',
+    width: '450px',
     marginTop: '1em',
   },
   formElement: {
     width: '100%',
     marginTop: '2em',
+  },
+  cardContent: {
+    textAlign: 'center',
   },
 }));
 
@@ -47,13 +50,14 @@ const SignIn = (props) => {
   return (
     <Box display="flex" alignItems="center" flexDirection="column">
       <Card className={classes.root} variant="outlined">
-        <CardContent>
+        <CardContent className={classes.cardContent}>
           <Typography variant="h5" component="h2">
             Sign In
           </Typography>
           <Typography variant="body2" component="p">
             Please Sign In.
           </Typography>
+          <img src="logo192.png" />
           <FormControl className={classes.formElement}>
             <InputLabel id="select-user-label">User</InputLabel>
             <Select
