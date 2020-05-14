@@ -44,7 +44,6 @@ const NavigationBar = (props) => {
             {props.title}
           </Typography>
           <span className={classes.spacer} />
-
           {authedUser ? (
             <>
               <Typography className={classes.greeting}>
@@ -76,7 +75,9 @@ const NavigationBar = (props) => {
         <Toolbar>
           <span className={classes.spacer} />
           <Button disableElevation>Home</Button>
-          <Button disableElevation>New Question</Button>
+          <Button disableElevation component={Link} to="/add">
+            New Question
+          </Button>
           <Button disableElevation component={Link} to="/leaderboard">
             Leader Board
           </Button>

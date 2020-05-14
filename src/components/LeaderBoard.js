@@ -19,6 +19,7 @@ const LeaderBoard = () => {
     });
   });
   userArray.sort((elementA, elementB) => elementB.score - elementA.score);
+
   return (
     <Box display="flex" alignItems="center" flexDirection="column">
       {userArray.map((user) => {

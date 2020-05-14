@@ -57,7 +57,7 @@ const SignIn = (props) => {
           <Typography variant="body2" component="p">
             Please Sign In.
           </Typography>
-          <img src="logo192.png" />
+          <img alt="react logo" src="logo192.png" />
           <FormControl className={classes.formElement}>
             <InputLabel id="select-user-label">User</InputLabel>
             <Select

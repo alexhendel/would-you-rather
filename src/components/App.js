@@ -1,13 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import NoMatch from './NoMatch';
 import SignIn from './SignIn';
-import NavigationBar from './NavigationBar';
-import { withStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
 import { handleInitialData } from '../actions/shared';
-import Backdrop from '@material-ui/core/Backdrop';
+import NewQuestion from './NewQuestion';
+import NavigationBar from './NavigationBar';
 import LeaderBoard from './LeaderBoard';
+import ProtectedRoute from './ProtectedRoute';
+import { withStyles } from '@material-ui/core/styles';
+import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = (theme) => ({
@@ -44,12 +46,12 @@ class App extends React.Component {
           <Route exact path="/signin">
             <SignIn />
           </Route>
-          <Route exact path="/add">
-            {/* <AddPoll /> */}
-          </Route>
-          <Route exact path="/leaderboard">
+          <ProtectedRoute exact path="/add">
+            <NewQuestion />
+          </ProtectedRoute>
+          <ProtectedRoute exact path="/leaderboard">
             <LeaderBoard />
-          </Route>
+          </ProtectedRoute>
           <Route>
             <NoMatch />
           </Route>
