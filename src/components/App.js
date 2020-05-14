@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import NoMatch from './NoMatch';
-import SignIn from './SignIn';
 import { handleInitialData } from '../actions/shared';
+import Home from './Home';
+import SignIn from './SignIn';
+import NoMatch from './NoMatch';
 import NewQuestion from './NewQuestion';
-import NavigationBar from './NavigationBar';
 import LeaderBoard from './LeaderBoard';
+import NavigationBar from './NavigationBar';
 import ProtectedRoute from './ProtectedRoute';
 import { withStyles } from '@material-ui/core/styles';
 import Backdrop from '@material-ui/core/Backdrop';
