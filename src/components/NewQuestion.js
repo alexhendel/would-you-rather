@@ -1,6 +1,9 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as API from '../api/_DATA';
+import { handleInitialData } from '../actions/shared';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -24,7 +27,10 @@ const useStyles = makeStyles((theme) => ({
 
 const NewQuestion = () => {
   const authedUser = useSelector((state) => state.authedUser);
+  const loading = useSelector((state) => state.loading);
+  const history = useHistory();
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [optionOne, setOptionOne] = React.useState('');
   const [optionTwo, setOptionTwo] = React.useState('');
 
@@ -43,7 +49,9 @@ const NewQuestion = () => {
       author: authedUser,
     };
 
-    console.log('submit question: ', newQuestion);
+    API._saveQuestion(newQuestion).then(
+      dispatch(handleInitialData()).then(history.push('/'))
+    );
   };
 
   return (
@@ -93,7 +101,7 @@ const NewQuestion = () => {
             variant="contained"
             color="primary"
             onClick={handleSubmit}
-            disabled={!optionOne || !optionTwo}
+            disabled={!optionOne || !optionTwo || loading}
           >
             Submit
           </Button>
