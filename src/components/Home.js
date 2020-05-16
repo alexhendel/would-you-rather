@@ -1,14 +1,8 @@
 import React from 'react';
-// import { useSelector } from 'react-redux';
+import QuestionList from './QuestionList';
 
 const Home = () => {
-  // const authedUser = useSelector((state) => state.authedUser);
-
-  return (
-    <>
-      <p>Home</p>
-    </>
-  );
+  return <QuestionList />;
 };
 
 export default Home;

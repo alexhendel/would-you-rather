@@ -8,6 +8,7 @@ import NoMatch from './NoMatch';
 import NewQuestion from './NewQuestion';
 import LeaderBoard from './LeaderBoard';
 import NavigationBar from './NavigationBar';
+import Question from './Question';
 import ProtectedRoute from './ProtectedRoute';
 import { withStyles } from '@material-ui/core/styles';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -49,6 +50,9 @@ class App extends React.Component {
           </ProtectedRoute>
           <ProtectedRoute exact path="/leaderboard">
             <LeaderBoard />
+          </ProtectedRoute>
+          <ProtectedRoute exact path="/questions/:question_id">
+            <Question />
           </ProtectedRoute>
           <Route exact path="/signin">
             <SignIn />
