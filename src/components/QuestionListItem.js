@@ -27,7 +27,7 @@ const QuestionListItem = (props) => {
 
   return (
     <>
-      <Paper className={classes.root}>
+      <Paper className={classes.root} variant="outlined">
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Typography variant="h5">
