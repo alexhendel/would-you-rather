@@ -15,7 +15,7 @@ const UserAvatar = (props) => {
   return (
     <>
       {props.user.avatarURL ? (
-        <Avatar src={props.user.avatarURL} />
+        <Avatar src={`${process.env.PUBLIC_URL}/${props.user.avatarURL}`} />
       ) : (
         <Avatar className={classes.avatar}>{props.user.name.charAt(0)}</Avatar>
       )}
