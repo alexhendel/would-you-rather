@@ -70,7 +70,6 @@ const SignIn = (props) => {
                 <em>None</em>
               </MenuItem>
               {Object.keys(users).map((key) => {
-                console.log(key);
                 return (
                   <MenuItem key={key} value={key}>
                     {users[key].name}

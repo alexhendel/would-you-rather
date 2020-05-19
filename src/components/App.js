@@ -28,40 +28,40 @@ class App extends React.Component {
 
   render() {
     const { classes } = this.props;
-    if (this.props.loading === true) {
-      return (
-        <>
+    return (
+      <>
+        {this.props.loading ? (
           <Backdrop open={true}>
             <CircularProgress className={classes.progress} />
           </Backdrop>
-        </>
-      );
-    }
-
-    return (
-      <Router>
-        <NavigationBar title="Would You Rather" />
-        <Switch>
-          <ProtectedRoute exact path="/">
-            <Home />
-          </ProtectedRoute>
-          <ProtectedRoute exact path="/add">
-            <NewQuestion />
-          </ProtectedRoute>
-          <ProtectedRoute exact path="/leaderboard">
-            <LeaderBoard />
-          </ProtectedRoute>
-          <ProtectedRoute exact path="/questions/:question_id">
-            <Question />
-          </ProtectedRoute>
-          <Route exact path="/signin">
-            <SignIn />
-          </Route>
-          <Route>
-            <NoMatch />
-          </Route>
-        </Switch>
-      </Router>
+        ) : (
+          <Router>
+            <NavigationBar title="Would You Rather" />
+            <Switch>
+              <ProtectedRoute exact path="/">
+                <Home />
+              </ProtectedRoute>
+              <ProtectedRoute exact path="/add">
+                <NewQuestion />
+              </ProtectedRoute>
+              <ProtectedRoute exact path="/leaderboard">
+                <LeaderBoard />
+              </ProtectedRoute>
+              <ProtectedRoute
+                exact
+                path="/questions/:question_id"
+                component={Question}
+              />
+              <Route exact path="/signin">
+                <SignIn />
+              </Route>
+              <Route>
+                <NoMatch />
+              </Route>
+            </Switch>
+          </Router>
+        )}
+      </>
     );
   }
 }
