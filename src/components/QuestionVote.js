@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import * as API from '../api/_DATA';
-import { handleInitialData } from '../actions/shared';
+import { handleSaveQuestionAnswer } from '../actions/questions';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
@@ -38,18 +37,12 @@ const QuestionVote = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    Promise.all([
-      API._saveQuestionAnswer({
-        authedUser,
-        qid: props.question.id,
-        answer: choice,
-      }),
-      dispatch(handleInitialData),
-    ]).then(
-      console.log('saved'),
-      history.push(`/questions/${props.question.id}`)
-    );
+    dispatch(
+      handleSaveQuestionAnswer(authedUser, props.question.id, choice)
+    ).then(() => {
+      history.push('/');
+      history.push(`/questions/${props.question.id}`);
+    });
   };
 
   return (
@@ -79,8 +72,8 @@ const QuestionVote = (props) => {
             color="primary"
             className={classes.fullWidth}
             variant="contained"
-            onClick={handleSubmit}
             disabled={loading}
+            onClick={handleSubmit}
           >
             Submit
           </Button>

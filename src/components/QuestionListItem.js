@@ -53,7 +53,7 @@ const QuestionListItem = (props) => {
                   variant="contained"
                   color="primary"
                   component={Link}
-                  to={'/questions/'.concat(props.question.id)}
+                  to={`/questions/${props.question.id}`}
                 >
                   View Poll
                 </Button>

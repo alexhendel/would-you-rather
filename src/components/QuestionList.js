@@ -58,6 +58,13 @@ const QuestionList = () => {
                   !question.optionOne.votes.includes(authedUser) &&
                   !question.optionTwo.votes.includes(authedUser)
               )
+              .sort((a, b) =>
+                a.timestamp > b.timestamp
+                  ? -1
+                  : b.timestamp > a.timestamp
+                  ? 1
+                  : 0
+              )
               .map((filteredQuestion) => (
                 <QuestionListItem
                   key={filteredQuestion.id}
@@ -71,6 +78,13 @@ const QuestionList = () => {
                 (question) =>
                   question.optionOne.votes.includes(authedUser) ||
                   question.optionTwo.votes.includes(authedUser)
+              )
+              .sort((a, b) =>
+                a.timestamp > b.timestamp
+                  ? -1
+                  : b.timestamp > a.timestamp
+                  ? 1
+                  : 0
               )
               .map((filteredQuestion) => (
                 <QuestionListItem
