@@ -6,7 +6,7 @@ export default function authedUser(state = null, action) {
     case SIGN_IN:
       return action.id;
     case SIGN_OUT:
-      return null;
+      return action.id;
     default:
       return state;
   }

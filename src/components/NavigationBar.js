@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -33,8 +32,12 @@ const NavigationBar = (props) => {
   const users = useSelector((state) => state.users);
   const authedUser = useSelector((state) => state.authedUser);
   const dispatch = useDispatch();
-  const history = useHistory();
   const classes = useStyles();
+
+  const signOut = (event) => {
+    event.preventDefault();
+    dispatch(handleSignOut());
+  };
 
   return (
     <div className={classes.root}>
@@ -50,13 +53,7 @@ const NavigationBar = (props) => {
                 Hello, {users[authedUser].name}
               </Typography>
               <UserAvatar user={users[authedUser]} />
-              <Button
-                color="secondary"
-                onClick={() => {
-                  dispatch(handleSignOut());
-                  history.push('/');
-                }}
-              >
+              <Button color="secondary" onClick={signOut}>
                 Sign Out
               </Button>
             </>
