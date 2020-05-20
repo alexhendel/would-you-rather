@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import NoMatch from './NoMatch';
 import QuestionResult from './QuestionResult';
 import UserAvatar from './UserAvatar';
+import QuestionVote from './QuestionVote';
 import { whoAsked } from '../utils/utils';
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
@@ -46,7 +47,7 @@ const Question = (props) => {
   return (
     <Box display="flex" alignItems="center" justifyContent="center">
       <Paper className={classes.root} variant="outlined">
-        <Grid container spacing={1}>
+        <Grid container spacing={2}>
           <Grid item xs={1}>
             <UserAvatar user={author} />
           </Grid>
@@ -77,7 +78,7 @@ const Question = (props) => {
                 </Grid>
               </Grid>
             ) : (
-              <div>alreadyVoted false</div>
+              <QuestionVote question={question} />
             )}
           </Grid>
         </Grid>
