@@ -1,27 +1,20 @@
 import * as API from '../api/_DATA';
 
-export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
+export const SAVE_QUESTION_ANSWER = 'SAVE_QUESTION_ANSWER';
 
-function receiveQuestions(questions) {
+function saveQuestionAnswer(authedUser, qid, answer) {
   return {
-    type: RECEIVE_QUESTIONS,
-    questions,
-  };
-}
-
-export function handleReceiveQuestions() {
-  return (dispatch) => {
-    return API._getQuestions().then((questions) =>
-      dispatch(receiveQuestions(questions))
-    );
+    type: SAVE_QUESTION_ANSWER,
+    authedUser,
+    qid,
+    answer,
   };
 }
 
 export function handleSaveQuestionAnswer(authedUser, qid, answer) {
   return (dispatch) => {
-    return Promise.all([
-      API._saveQuestionAnswer({ authedUser, qid, answer }),
-      dispatch(handleReceiveQuestions()),
-    ]);
+    return API._saveQuestionAnswer({ authedUser, qid, answer }).then(() =>
+      dispatch(saveQuestionAnswer(authedUser, qid, answer))
+    );
   };
 }
