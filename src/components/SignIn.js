@@ -37,11 +37,11 @@ class SignIn extends Component {
   };
   handleLogin = (event) => {
     event.preventDefault();
-    const { history } = this.props;
+    const { history, location } = this.props;
     const { dispatch } = this.props;
 
     dispatch(handleSignIn(this.state.loginId));
-    history.push('/');
+    history.push(location.state ? location.state.from : '/');
   };
   render() {
     const { classes } = this.props;
