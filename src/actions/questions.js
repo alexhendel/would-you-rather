@@ -2,10 +2,11 @@ import * as API from '../api/_DATA';
 
 export const ADD_QUESTION = 'ADD_QUESTION';
 
-function addQuestion(question) {
+function addQuestion(question, author) {
   return {
     type: ADD_QUESTION,
     question,
+    author,
   };
 }
 
@@ -15,6 +16,6 @@ export function handleAddQuestion(optionOneText, optionTwoText, author) {
       optionOneText,
       optionTwoText,
       author,
-    }).then((question) => dispatch(addQuestion(question)));
+    }).then((question) => dispatch(addQuestion(question, author)));
   };
 }
