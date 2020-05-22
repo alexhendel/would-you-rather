@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   fullWidth: {
     width: '100%',
   },
@@ -23,58 +23,60 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     marginBottom: '0.3em',
   },
-}));
+});
 
-const QuestionResult = (props) => {
-  const users = useSelector((state) => state.users);
-  const classes = useStyles();
-
-  return (
-    <Paper className={classes.card} variant="outlined">
-      <Grid container spacing={1} alignItems="center" alignContent="center">
-        <Grid item xs={12}>
-          {props.myVote ? (
-            <>
-              <div className={classes.badge}>
-                <Typography variant="caption">Your Vote</Typography>
-              </div>
+class QuestionResult extends Component {
+  render() {
+    const { classes } = this.props;
+    const { users } = this.props;
+    const { question } = this.props;
+    return (
+      <Paper className={classes.card} variant="outlined">
+        <Grid container spacing={1} alignItems="center" alignContent="center">
+          <Grid item xs={12}>
+            {this.props.myVote ? (
+              <>
+                <div className={classes.badge}>
+                  <Typography variant="caption">Your Vote</Typography>
+                </div>
+                <Typography>
+                  {question[this.props.optionKey]
+                    ? 'Would you rather '.concat(
+                        question[this.props.optionKey].text
+                      )
+                    : ''}
+                </Typography>
+              </>
+            ) : (
               <Typography>
-                {props.question[props.optionKey]
+                {question[this.props.optionKey]
                   ? 'Would you rather '.concat(
-                      props.question[props.optionKey].text
+                      question[this.props.optionKey].text
                     )
                   : ''}
               </Typography>
-            </>
-          ) : (
-            <Typography>
-              {props.question[props.optionKey]
-                ? 'Would you rather '.concat(
-                    props.question[props.optionKey].text
-                  )
-                : ''}
-            </Typography>
-          )}
-        </Grid>
-        <Grid item xs={12}>
-          <LinearProgress
-            className={classes.fullWidth}
-            variant="determinate"
-            value={
-              (props.question[props.optionKey].votes.length * 100) /
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            <LinearProgress
+              className={classes.fullWidth}
+              variant="determinate"
+              value={
+                (question[this.props.optionKey].votes.length * 100) /
+                Object.keys(users).length
+              }
+            />
+          </Grid>
+          <Grid item xs={12}>
+            {`${question[this.props.optionKey].votes.length} out of ${
               Object.keys(users).length
-            }
-          />
+            }`}
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          {`${props.question[props.optionKey].votes.length} out of ${
-            Object.keys(users).length
-          }`}
-        </Grid>
-      </Grid>
-    </Paper>
-  );
-};
+      </Paper>
+    );
+  }
+}
 
 QuestionResult.propTypes = {
   question: PropTypes.object.isRequired,
@@ -82,4 +84,6 @@ QuestionResult.propTypes = {
   myVote: PropTypes.bool,
 };
 
-export default QuestionResult;
+export default connect((state) => ({
+  users: state.users,
+}))(withStyles(styles, { withTheme: true })(QuestionResult));
