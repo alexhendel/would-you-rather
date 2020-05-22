@@ -1,90 +1,106 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { whoAsked } from '../utils/utils';
 import NoMatch from './NoMatch';
 import QuestionResult from './QuestionResult';
 import UserAvatar from './UserAvatar';
 import QuestionVote from './QuestionVote';
-import { whoAsked } from '../utils/utils';
-import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
+import { withStyles } from '@material-ui/styles';
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   root: {
     marginTop: '1em',
     padding: '1em',
     maxWidth: '550px',
   },
-}));
+});
 
-const Question = (props) => {
-  const authedUser = useSelector((state) => state.authedUser);
-  const questions = useSelector((state) => state.questions);
-  const users = useSelector((state) => state.users);
-  const classes = useStyles();
-  const [question] = React.useState(questions[props.match.params.question_id]);
-  const [author] = React.useState(
-    whoAsked(users, questions[props.match.params.question_id])
-  );
+class Question extends Component {
+  mapQuestion = () => {
+    const { questions } = this.props;
+    return questions[this.props.match.params.question_id];
+  };
+  mapAuthor = () => {
+    const { users } = this.props;
+    return whoAsked(users, this.mapQuestion());
+  };
+  alreadyVoted = () => {
+    const { authedUser } = this.props;
+    const optionOneVotes = this.mapQuestion.optionOne.votes;
+    const optionTwoVotes = this.mapQuestion.optionTwo.votes;
 
-  const alreadyVoted = (question, user) => {
     if (
-      question.optionOne.votes.includes(user) ||
-      question.optionTwo.votes.includes(user)
+      optionOneVotes.includes(authedUser) ||
+      optionTwoVotes.includes(authedUser)
     ) {
       return true;
+    } else {
+      return false;
     }
-
-    return false;
   };
 
-  if (!question) {
-    return <NoMatch />;
-  }
+  render() {
+    const { classes } = this.props;
+    const { authedUser } = this.props;
 
-  return (
-    <Box display="flex" alignItems="center" justifyContent="center">
-      <Paper className={classes.root} variant="outlined">
-        <Grid container spacing={2}>
-          <Grid item xs={1}>
-            <UserAvatar user={author} />
-          </Grid>
-          <Grid item xs={11}>
-            <Typography variant="h5">
-              {'Asked by '.concat(author.name)}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            {alreadyVoted(question, authedUser) ? (
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <Typography variant="h6">Results:</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <QuestionResult
-                    question={question}
-                    optionKey="optionOne"
-                    myVote={question.optionOne.votes.includes(authedUser)}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <QuestionResult
-                    question={question}
-                    optionKey="optionTwo"
-                    myVote={question.optionTwo.votes.includes(authedUser)}
-                  />
-                </Grid>
+    if (!this.mapQuestion) {
+      return <NoMatch />;
+    } else {
+      return (
+        <Box display="flex" alignItems="center" justifyContent="center">
+          <Paper className={classes.root} variant="outlined">
+            <Grid container spacing={2}>
+              <Grid item xs={1}>
+                <UserAvatar user={this.mapAuthor()} />
               </Grid>
-            ) : (
-              <QuestionVote question={question} />
-            )}
-          </Grid>
-        </Grid>
-      </Paper>
-    </Box>
-  );
-};
+              <Grid item xs={11}>
+                <Typography variant="h5">
+                  {'Asked by '.concat(this.mapAuthor().name)}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                {this.alreadyVoted ? (
+                  <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                      <Typography variant="h6">Results:</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <QuestionResult
+                        question={this.mapQuestion()}
+                        optionKey="optionOne"
+                        myVote={this.mapQuestion().optionOne.votes.includes(
+                          authedUser
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <QuestionResult
+                        question={this.mapQuestion()}
+                        optionKey="optionTwo"
+                        myVote={this.mapQuestion().optionTwo.votes.includes(
+                          authedUser
+                        )}
+                      />
+                    </Grid>
+                  </Grid>
+                ) : (
+                  <QuestionVote question={this.mapQuestion()} />
+                )}
+              </Grid>
+            </Grid>
+          </Paper>
+        </Box>
+      );
+    }
+  }
+}
 
-export default Question;
+export default connect((state) => ({
+  authedUser: state.authedUser,
+  users: state.users,
+  questions: state.questions,
+}))(withStyles(styles, { withTheme: true })(Question));
