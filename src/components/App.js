@@ -51,9 +51,9 @@ class App extends React.Component {
                 component={Question}
               />
               <Route exact path="/signin" component={SignIn} />
-              <Route>
+              <ProtectedRoute>
                 <NoMatch />
-              </Route>
+              </ProtectedRoute>
             </Switch>
           </Router>
         )}
