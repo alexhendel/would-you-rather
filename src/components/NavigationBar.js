@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
+import { handleSignOut } from '../actions/authedUser';
 
-import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import UserAvatar from './UserAvatar';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import { handleSignOut } from '../actions/authedUser';
+import { withStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -26,69 +25,78 @@ const useStyles = makeStyles((theme) => ({
   greeting: {
     marginRight: theme.spacing(1),
   },
-}));
+});
 
-const NavigationBar = (props) => {
-  const users = useSelector((state) => state.users);
-  const authedUser = useSelector((state) => state.authedUser);
-  const dispatch = useDispatch();
-  const classes = useStyles();
-
-  const signOut = (event) => {
+class NavigationBar extends Component {
+  signOut = (event) => {
     event.preventDefault();
+    const { dispatch } = this.props;
     dispatch(handleSignOut());
   };
-
-  return (
-    <div className={classes.root}>
-      <AppBar position="static" elevation={0} color="transparent">
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            {props.title}
-          </Typography>
-          <span className={classes.spacer} />
-          {authedUser ? (
-            <>
-              <Typography className={classes.greeting}>
-                Hello, {users[authedUser].name}
-              </Typography>
-              <UserAvatar user={users[authedUser]} />
-              <Button color="secondary" onClick={signOut}>
-                Sign Out
+  render() {
+    const { classes } = this.props;
+    const { authedUser } = this.props;
+    const { users } = this.props;
+    return (
+      <div className={classes.root}>
+        <AppBar position="static" elevation={0} color="transparent">
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              {this.props.title}
+            </Typography>
+            <span className={classes.spacer} />
+            {authedUser ? (
+              <>
+                <Typography className={classes.greeting}>
+                  Hello, {users[authedUser].name}
+                </Typography>
+                <UserAvatar user={users[authedUser]} />
+                <Button color="secondary" onClick={this.signOut}>
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                component={Link}
+                to="/signin"
+              >
+                Sign In
               </Button>
-            </>
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              component={Link}
-              to="/signin"
-            >
-              Sign In
+            )}
+          </Toolbar>
+          <Divider />
+          <Toolbar>
+            <span className={classes.spacer} />
+            <Button disableElevation component={Link} to="/">
+              Home
             </Button>
-          )}
-        </Toolbar>
-        <Divider />
-        <Toolbar>
-          <span className={classes.spacer} />
-          <Button disableElevation component={Link} to="/">
-            Home
-          </Button>
-          <Button disableElevation component={Link} to="/add">
-            New Question
-          </Button>
-          <Button disableElevation component={Link} to="/leaderboard">
-            Leader Board
-          </Button>
-          <span className={classes.spacer} />
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
-};
+            <Button disableElevation component={Link} to="/add">
+              New Question
+            </Button>
+            <Button disableElevation component={Link} to="/leaderboard">
+              Leader Board
+            </Button>
+            <span className={classes.spacer} />
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
+}
 
 NavigationBar.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export default NavigationBar;
+function mapStateToProps({ users, authedUser }) {
+  return {
+    users,
+    authedUser,
+  };
+}
+
+export default connect(mapStateToProps)(
+  withStyles(styles, { withTheme: true })(NavigationBar)
+);
