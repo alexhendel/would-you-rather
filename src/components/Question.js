@@ -47,7 +47,7 @@ class Question extends Component {
     const { classes } = this.props;
     const { authedUser } = this.props;
 
-    if (!this.mapQuestion) {
+    if (!this.mapQuestion()) {
       return <NoMatch />;
     } else {
       return (

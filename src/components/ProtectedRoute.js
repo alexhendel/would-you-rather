@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -11,7 +12,9 @@ class ProtectedRoute extends Component {
         {authedUser ? (
           <Route {...this.props}>{this.props.children}</Route>
         ) : (
-          <Redirect to="/signin" />
+          <Redirect
+            to={{ pathname: '/signin', state: { from: this.props.location } }}
+          />
         )}
       </>
     );
@@ -20,4 +23,4 @@ class ProtectedRoute extends Component {
 
 export default connect((state) => ({
   authedUser: state.authedUser,
-}))(ProtectedRoute);
+}))(withRouter(ProtectedRoute));
