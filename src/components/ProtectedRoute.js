@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-const ProtectedRoute = (props) => {
-  const authedUser = useSelector((state) => state.authedUser);
+class ProtectedRoute extends Component {
+  render() {
+    const { authedUser } = this.props;
+    return (
+      <>
+        {authedUser ? (
+          <Route {...this.props}>{this.props.children}</Route>
+        ) : (
+          <Redirect to="/signin" />
+        )}
+      </>
+    );
+  }
+}
 
-  return (
-    <>
-      {authedUser ? (
-        <Route {...props}>{props.children}</Route>
-      ) : (
-        <Redirect to="/signin" />
-      )}
-    </>
-  );
-};
-
-export default ProtectedRoute;
+export default connect((state) => ({
+  authedUser: state.authedUser,
+}))(ProtectedRoute);
