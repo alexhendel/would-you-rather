@@ -30,8 +30,8 @@ class Question extends Component {
   };
   alreadyVoted = () => {
     const { authedUser } = this.props;
-    const optionOneVotes = this.mapQuestion.optionOne.votes;
-    const optionTwoVotes = this.mapQuestion.optionTwo.votes;
+    const optionOneVotes = this.mapQuestion().optionOne.votes;
+    const optionTwoVotes = this.mapQuestion().optionTwo.votes;
 
     if (
       optionOneVotes.includes(authedUser) ||
@@ -63,7 +63,7 @@ class Question extends Component {
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                {this.alreadyVoted ? (
+                {this.alreadyVoted() ? (
                   <Grid container spacing={1}>
                     <Grid item xs={12}>
                       <Typography variant="h6">Results:</Typography>
