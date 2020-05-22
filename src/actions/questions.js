@@ -1,20 +1,20 @@
 import * as API from '../api/_DATA';
 
-export const SAVE_QUESTION_ANSWER = 'SAVE_QUESTION_ANSWER';
+export const ADD_QUESTION = 'ADD_QUESTION';
 
-function saveQuestionAnswer(authedUser, qid, answer) {
+function addQuestion(question) {
   return {
-    type: SAVE_QUESTION_ANSWER,
-    authedUser,
-    qid,
-    answer,
+    type: ADD_QUESTION,
+    question,
   };
 }
 
-export function handleSaveQuestionAnswer(authedUser, qid, answer) {
+export function handleAddQuestion(optionOneText, optionTwoText, author) {
   return (dispatch) => {
-    return API._saveQuestionAnswer({ authedUser, qid, answer }).then(() =>
-      dispatch(saveQuestionAnswer(authedUser, qid, answer))
-    );
+    return API._saveQuestion({
+      optionOneText,
+      optionTwoText,
+      author,
+    }).then((question) => dispatch(addQuestion(question)));
   };
 }
